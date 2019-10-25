@@ -6,6 +6,8 @@
  *
  * @package OHIGH_v1.0
  */
+// Register custom navigation walker
+  
 
 if ( ! function_exists( 'ohigh_setup' ) ) :
 	/**
@@ -15,7 +17,17 @@ if ( ! function_exists( 'ohigh_setup' ) ) :
 	 * runs before the init hook. The init hook is too late for some features, such
 	 * as indicating support for post thumbnails.
 	 */
+
+	/**
+ * Register Custom Navigation Walker
+ */
+function register_navwalker(){
+	require_once get_template_directory() . '/class-wp-bootstrap-navwalker.php';
+}
+add_action( 'after_setup_theme', 'register_navwalker' );
+
 	function ohigh_setup() {
+	
 		/*
 		 * Make theme available for translation.
 		 * Translations can be filed in the /languages/ directory.
@@ -120,7 +132,15 @@ add_action( 'widgets_init', 'ohigh_widgets_init' );
  * Enqueue scripts and styles.
  */
 function ohigh_scripts() {
+	
+
 	wp_enqueue_style( 'ohigh-style', get_stylesheet_uri() );
+
+	wp_enqueue_style( 'ohigh-custom-style', get_template_directory_uri() . '/custom.css' );
+
+	wp_enqueue_script( 'jquery' );
+
+	wp_enqueue_script( 'ohigh-bootstrap_js', get_template_directory_uri() . '/js/bootstrap.min.js', array('jquery'), null, true );
 
 	wp_enqueue_script( 'ohigh-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
 
@@ -130,7 +150,10 @@ function ohigh_scripts() {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
+
+
 add_action( 'wp_enqueue_scripts', 'ohigh_scripts' );
+
 
 /**
  * Implement the Custom Header feature.
